@@ -40,8 +40,5 @@ class SendBookedNotification implements ShouldQueue
     /**
      * Handle the event.
      */
-    public function handle(AppointmentBooked $event): void
-    {
-        //
-    }
+   
 }
