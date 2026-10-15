@@ -14,7 +14,7 @@ class AvailabilityController extends Controller
     {
         $user=auth()->user();
         if($user->role !='doctor'){
-            return response()->json(['message','not allowed'],403);
+            return response()->json(['message'=>'not allowed'],403);
         }
         return $user->doctor->availabilities;
     }

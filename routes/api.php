@@ -5,6 +5,7 @@ use App\Http\Controllers\AppointmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\DoctorController;
 use App\Models\Availability;
 
@@ -19,8 +20,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/doctors', [DoctorController::class, 'index']);
     Route::post('/doctors', [DoctorController::class, 'store']);
-    Route::get('/availabilities', [Availability::class, 'index']);
-    Route::post('/availabilities', [Availability::class, 'store']);
+    Route::get('/availabilities', [AvailabilityController::class, 'index']);
+    Route::post('/availabilities', [AvailabilityController::class, 'store']);
     Route::get('/doctors/{id}/slots',[DoctorController::class,'slots']);
     Route::get('/appointments', [AppointmentController::class, 'index']);
     Route::post('/appointments', [AppointmentController::class, 'store']);

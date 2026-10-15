@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\User;
-use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -25,7 +24,7 @@ class AdminController extends Controller
         $total=Appointment::count();
         $byStatus=Appointment::select('status',DB::raw('count(*) as count'))->groupby('status')->get();
 
-        $busiest=Appointment::select('doctor_id',DB::raw('count(*) as count'))->groupby('doctor_id');
+        $busiest=Appointment::select('doctor_id',DB::raw('count(*) as count'))->groupby('doctor_id')->get();
 
         return response()->json([
             'total'=>$total,
@@ -48,7 +47,7 @@ class AdminController extends Controller
         }
         $request->validate([
             'name'=>'required',
-            'email'=>'required|email'.id,
+            'email'=>'required|email'.$id,
             'role'=>'required|in:admin,doctor,patient',
         ]);
         $user=User::findOrFail($id);
@@ -64,7 +63,7 @@ class AdminController extends Controller
         return response()->json(['message'=>'user deleted']);
     }
 
-    public function updateDoctor(Request $request){
+    public function updateDoctor(Request $request,$id){
         if(auth()->user()->role!='admin'){
             return response()->json(['message'=>'not allowed']);
         }

@@ -15,10 +15,10 @@ class AppointmentController extends Controller
     public function index()
     {
         $user=auth()->user();
-        if($user->role === 'doctor'){
+        if($user->role === 'patient'){
             return $user->appointments()->with('doctor.user')->get();
         }
-        if($user->role === 'patient'){
+        if($user->role === 'doctor'){
             return $user->appointments()->with('patient')->get();
         }
         return Appointment::with('doctor.user','patient')->get();
@@ -74,13 +74,13 @@ class AppointmentController extends Controller
         $user=auth()->user();
         $appointment=Appointment::with('doctor.user','patient')->findOrFail($id);
 
-        $isPatient=$appointment->patient_id->id === $user->id;
+        $isPatient=$appointment->patient_id=== $user->id;
         $isDoctor=$user->role=='doctor'&&$appointment->doctor_id === $user->doctor->id;
 
         if(!$isPatient&&!$isDoctor && $user->role!=='admin'){
             return response()->json(['message' => 'Unauthorized'], 403);
         }
-        return $appointment
+        return $appointment;
     }
 
     /**
