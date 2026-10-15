@@ -23,5 +23,5 @@ Schedule::call(function () {
             ]);
             $appointment->reminded=true;
             $appointment->save();
-        }
+        }}
 })->everyFiveMinutes();
