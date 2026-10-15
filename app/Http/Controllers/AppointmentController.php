@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Events\AppointmentBooked;
 
 class AppointmentController extends Controller
 {
@@ -61,6 +62,7 @@ class AppointmentController extends Controller
                 'status'=>'pending',
             ]);
         });
+        AppointmentBooked::dispatch($appointment);
         return response()->json(['message' => 'Appointment booked successfully', 'appointment' => $appointment], 201);
     }
 
@@ -119,5 +121,23 @@ class AppointmentController extends Controller
         $appointment->status='cancelled';
         $appointment->save();
         return response()->json(['message' => 'Appointment cancelled successfully', 'appointment' => $appointment], 200);
+    }
+
+    public function updateStatus(Request $request, string $id)
+    {
+        $user=auth()->user();
+        if($user->role!=='doctor'){
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        $appointment=Appointment::findOrFail($id);
+        if($appointment->doctor_id !== $user->doctor->id){
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        $request->validate([
+            'status'=>'required|in:pending,confirmed,completed,cancelled'
+        ]);
+        $appointment->status=$request->status;
+        $appointment->save();
+        return response()->json(['message' => 'Appointment status updated successfully', 'appointment' => $appointment], 200);
     }
 }

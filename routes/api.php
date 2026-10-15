@@ -25,4 +25,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/appointments', [AppointmentController::class, 'store']);
     Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
     Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
+    Route::patch('/appointments/{id}/status', [AppointmentController::class, 'updateStatus']);
+    Route::get('/notifications', function(){
+        return auth()->user()->notifications;
+    });
 });
