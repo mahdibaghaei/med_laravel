@@ -1,0 +1,28 @@
+@url = http://127.0.0.1:8000/api
+
+### register
+POST {{url}}/register
+Accept: application/json
+Content-Type: application/json
+
+{
+    "name": "ali",
+    "email": "ali@a.com",
+    "password": "12345678"
+}
+
+### login
+# @name login
+POST {{url}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "ali@a.com",
+    "password": "12345678"
+}
+
+### logout
+POST {{url}}/logout
+Accept: application/json
+Authorization: Bearer {{login.response.body.token}}

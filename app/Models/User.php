@@ -7,11 +7,16 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use App\Models\Doctor;
+use app\Models\Appointment;
+use App\Models\Notification;
+
 
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable,HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +27,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**
@@ -45,5 +51,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function doctor(){
+        return $this->hasOne(Doctor::class);
+    }
+
+    public function appointments(){
+        return $this->hasMany(Appointment::class,'patient_id');
+    }
+    public function notifications(){
+        return $this->hasMany(Notification::class);
     }
 }
