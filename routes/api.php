@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -20,4 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/availabilities', [Availability::class, 'index']);
     Route::post('/availabilities', [Availability::class, 'store']);
     Route::get('/doctors/{id}/slots',[DoctorController::class,'slots']);
+    Route::get('/appointments', [AppointmentController::class, 'index']);
+    Route::post('/appointments', [AppointmentController::class, 'store']);
+    Route::get('/appointments/{id}', [AppointmentController::class, 'show']);
+    Route::post('/appointments/{id}/cancel', [AppointmentController::class, 'cancel']);
 });
