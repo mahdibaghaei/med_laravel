@@ -26,3 +26,34 @@ Content-Type: application/json
 POST {{url}}/logout
 Accept: application/json
 Authorization: Bearer {{login.response.body.token}}
+
+### login admin
+# @name adminLogin
+POST {{url}}/login
+Accept: application/json
+Content-Type: application/json
+
+{
+    "email": "a@a.com",
+    "password": "123456"
+}
+
+### create doctor
+POST {{url}}/doctors
+Accept: application/json
+Content-Type: application/json
+Authorization: Bearer {{adminLogin.response.body.token}}
+
+{
+    "name": "dr smith",
+    "email": "dr@a.com",
+    "password": "12345678",
+    "password_confirmation": "12345678",
+    "expertise": "cardiology",
+    "medical-code": "12345"
+}
+
+### list doctors
+GET {{url}}/doctors
+Accept: application/json
+Authorization: Bearer {{adminLogin.response.body.token}}
